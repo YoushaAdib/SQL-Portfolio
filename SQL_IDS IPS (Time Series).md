@@ -1,13 +1,16 @@
-## IDS IPS (Time Series) Dataset 
+# IDS IPS (Time Series) Dataset 
+First I will be making summary of the dataset in various aspects, to understand the structure as well as the attacker's mindset, and organizational defence. 
 
+## Attack Data Summarization: 
+I want to know about the attack counts, attack durations, targated ports, protocols and packet sizes. First query will be orcastrated to find out about it. 
 
-**Analysis:** 
+**Analysis: Outcome** 
 1. Attacker started with different types of Ports enumuration *(60K Ports)* and discovering about the network with various protocols (0, 6, 17).
 2. Attacker focused mostly on different types of *DDOS attacks*, in terms of **Count (32%)**, **Packet Size (40+ MB)** and **Durations**. 
 3. Majority of the attack vectors focused on specific ports, means either default ports were not changed or attacker could easily grab the port banners. 
  
-
-**SQL: EDA Summary**
+ 
+**SQL Code**
 ```sql  
 SELECT
     LABEL,
@@ -42,3 +45,16 @@ ORDER BY
 | Brute Force -Web        | 611       | 0.01  | 21654637030      | 0.16     | 6         | 3              | 0, 6, 17      | 89354        |
 | Brute Force -XSS        | 230       | 0.01  | 6592420500       | 0.09     | 3         | 2              | 6, 17        | 87506        |
 | SQL Injection           | 87        | 0     | 288468243        | 0.01     | 1         | 1              | 6             | 118848       |
+
+
+
+## Drilling Down into Flow Duration and Attack Packets
+
+**Analysis** 
+
+
+**SQL Code**
+```sql 
+
+
+

@@ -48,13 +48,57 @@ ORDER BY
 
 
 
-## Drilling Down into Flow Duration and Attack Packets
+## Stat analysis on Packet Data
 
 **Analysis** 
 
 
 **SQL Code**
-```sql 
+```sql
+SELECT 
+    LABEL,
+        CONCAT(
+            CASE 
+                WHEN CORR (TOT_FWD_PKTS, TOT_BWD_PKTS) > 0 THEN 'POS:'
+                WHEN CORR (TOT_FWD_PKTS, TOT_BWD_PKTS) < 0 THEN 'NEG:'
+                ELSE 'N/A'
+            END, 
+            CAST(ROUND(CORR (TOT_FWD_PKTS, TOT_BWD_PKTS),4) AS VARCHAR2(10))
+        ) AS CMT_FB,
+        CONCAT(    
+            CASE 
+                WHEN CORR (TOTLEN_FWD_PKTS, TOTLEN_BWD_PKTS) > 0 THEN 'POS:'
+                WHEN CORR (TOTLEN_FWD_PKTS, TOTLEN_BWD_PKTS) < 0 THEN 'NEG:'
+                ELSE 'N/A'
+            END,
+            CAST(ROUND(CORR (TOTLEN_FWD_PKTS, TOTLEN_BWD_PKTS),4) AS VARCHAR2(10))
+        ) AS CMT_FB_LEN, 
+        CONCAT(CONCAT(MAX(FWD_PKT_LEN_MAX), ':'), MIN(FWD_PKT_LEN_MIN)) AS F_LEN,
+        REGR_SLOPE(FWD_PKT_LEN_MEAN, BWD_PKT_LEN_MEAN) AS REG_FB_MEAN      
+FROM 
+    IDS_1
+GROUP BY 
+    LABEL  
+HAVING 
+    CORR (TOT_FWD_PKTS, TOT_BWD_PKTS) IS NOT NULL
+    AND CORR (TOTLEN_FWD_PKTS, TOTLEN_BWD_PKTS) IS NOT NULL
+```
+
+**Output: Table**
+|LABEL|CMT_FB|CMT_FB_LEN|F_LEN|REG_FB_MEAN|
+|-----|------|----------|-----|-----------|
+|Bot|POS:.2256|POS:.8747|1460:0|1.3917|
+|Benign|POS:.8039|POS:.0044|64440:0|0.2199|
+|DoS attacks-Hulk|POS:.6899|POS:.9524|422:0|0.4727|
+|Infilteration|POS:.8294|POS:.0142|1880:0|0.1679|
+|DDOS attack-HOIC|POS:1|POS:.9932|365:0|0.4265|
+|Brute Force -Web|POS:.9993|POS:.998|1168:0|0.2372|
+|Brute Force -XSS|POS:.9998|POS:.9998|680:0|0.1410|
+|SQL Injection|POS:.8917|POS:.9647|733:0|0.1506|
+|DoS attacks-GoldenEye|POS:.6553|POS:.4112|811:0|0.3027|
+|DoS attacks-Slowloris|POS:.7379|NEG:-.087|238:0|0.3025|
+
+
 
 
 

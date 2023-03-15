@@ -7,4 +7,4 @@ Real IDS/IPS dataset is really hard to come by. I have been using CSE-CIC-IDS201
 Checkout the complete **SQL Code, Analysis & Outcome** [here.](https://github.com/YoushaAdib/SQL-Portfolio/blob/main/SQL_IDS%20IPS%20(Time%20Series).md)
 
 # Dataset: Financial Statements (Simple)
-A simple financial statements made by me. 
+A simple financial statements made by me. Contains bank records, supplier & customer details, company income and expense. I have used an old financial data dump to create the Database Files (Oracle 21c), later attempted to create Financial Position (Balance Sheet), Profit & Loss (PL, OCI), Aging Schedule (Customer & Supplier), Financial Ledger and Statements with SQL. 
